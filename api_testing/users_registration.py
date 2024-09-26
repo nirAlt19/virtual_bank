@@ -1,11 +1,13 @@
 import requests
 import random
 
+password = 'password123'
+
 user_data = {
     'first_name': 'Jane',
     'last_name': 'Doe',
     'email': 'jane' + str(random.randint(1, 1000)) + '@doe',
-    'hashed_password': 'password123'
+    'password': password
 }
 
 response = requests.post('http://localhost:5000/users', json=user_data)
