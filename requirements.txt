@@ -4,3 +4,4 @@ PyJWT
 Werkzeug
 uuid6
 psycopg2
+bcrypt

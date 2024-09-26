@@ -4,7 +4,7 @@ import logging
 from uuid import uuid4
 from providers.db import get_postgresql_cursor
 from users.user import User
-from users.auth_service import hash_password
+from users.auth_service import hash_password, verify_password
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -66,8 +66,7 @@ class UserLogin(Resource):
                 'message': 'User not found'
             }, 404
 
-        hashed_password = hash_password(args.get('password'))
-        if response.get('password_hash') != hashed_password:
+        if not verify_password(args.get('password'), response.get('password_hash')):
             return {
                 'message': 'Incorrect password'
             }, 401
@@ -75,5 +74,9 @@ class UserLogin(Resource):
         #todo: Work on the response. Do we need to initialize a user object?
         return {
             'message': f'User {email} logged in successfully',
-            'user': args
+            'user': {
+                'id': response.get('id'),
+                'email': response.get('email'),
+                'last_updated_at': str(response.get('updated_at'))
+            }
         }, 201
