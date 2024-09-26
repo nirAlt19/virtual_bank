@@ -2,22 +2,30 @@ import psycopg2
 from psycopg2.extras import DictCursor
 
 
-def get_postgresql_cursor():
-    try:
-        # Connection parameters
-        conn_params = {
-            "host": "localhost",
-            "database": "mydb",
-            "user": "myuser",
-            "password": "mypassword"
-        }
+def connect_db():
+    # Connection parameters
+    conn_params = {
+        "host": "localhost",
+        "database": "mydb",
+        "user": "myuser",
+        "password": "mypassword"
+    }
 
+    try:
         # Establish a connection
         conn = psycopg2.connect(**conn_params, cursor_factory=DictCursor)
         conn.autocommit = True
 
+        return conn
+    except Exception as e:
+        raise e
+
+
+def get_postgresql_cursor():
+    try:
+        connection = connect_db()
         # Create a cursor
-        cur = conn.cursor()
+        cur = connection.cursor()
 
         return cur
 
