@@ -1,15 +1,17 @@
 import psycopg2
 from psycopg2.extras import DictCursor
+import os
 
 
-def connect_db():
-    # Connection parameters
-    conn_params = {
-        "host": "localhost",
-        "database": "mydb",
-        "user": "myuser",
-        "password": "mypassword"
-    }
+def get_postgresql_cursor():
+    try:
+        # Connection parameters
+        conn_params = {
+            "host": os.environ.get('DB_HOST'),
+            "database": os.environ.get('DB_NAME'),
+            "user": os.environ.get('DB_USER'),
+            "password": os.environ.get('DB_PASSWORD')
+        }
 
     try:
         # Establish a connection
