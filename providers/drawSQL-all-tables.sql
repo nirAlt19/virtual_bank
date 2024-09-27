@@ -13,6 +13,12 @@ ALTER TABLE
     "users" ADD PRIMARY KEY("id");
 ALTER TABLE
     "users" ADD CONSTRAINT "users_email_unique" UNIQUE("email");
+CREATE TABLE "account_types"(
+    "account_type_id" BIGINT NOT NULL,
+    "account_type_description" TEXT NOT NULL
+);
+ALTER TABLE
+    "account_types" ADD PRIMARY KEY("account_type_id");
 CREATE TABLE "bank_accounts"(
     "id" UUID NOT NULL,
     "owner" TEXT NOT NULL,
@@ -27,3 +33,5 @@ CREATE INDEX "bank_accounts_owner_index" ON
     "bank_accounts"("owner");
 ALTER TABLE
     "bank_accounts" ADD CONSTRAINT "bank_accounts_owner_foreign" FOREIGN KEY("owner") REFERENCES "users"("email");
+ALTER TABLE
+    "bank_accounts" ADD CONSTRAINT "bank_accounts_account_type_foreign" FOREIGN KEY("account_type") REFERENCES "account_types"("account_type_id");
