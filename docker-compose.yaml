@@ -2,7 +2,7 @@
 services:
   flask_api:
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
@@ -14,7 +14,7 @@ services:
       - DB_USER=myuser
       - DB_PASSWORD=mypassword
     volumes:
-      - ..:/app
+      - .:/app
     command: python server.py
     depends_on:
       - db

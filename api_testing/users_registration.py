@@ -8,7 +8,7 @@ user_data = {
     'hashed_password': 'password123'
 }
 
-response = requests.post('http://localhost:5000/users', json=user_data)
+response = requests.post('http://localhost:5000/users/register', json=user_data)
 
 if response.status_code == 201:
     print(response.json())

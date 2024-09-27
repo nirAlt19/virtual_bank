@@ -3,6 +3,7 @@ from datetime import datetime
 import logging
 from uuid import uuid4
 from providers.db import get_postgresql_cursor
+from psycopg2.errors import UniqueViolation
 from users.user import User
 
 logger = logging.getLogger(__name__)
@@ -29,8 +30,16 @@ class UserRegistration(Resource):
         print(query)
         # todo: Need to handle connection
         cursor = get_postgresql_cursor()
-        cursor.execute(query)
-        cursor.close()
+
+        try:
+            cursor.execute(query)
+        except UniqueViolation:
+            return {
+                'message': 'Owner account already exists',
+                'owner': user.email,
+            }, 400
+        finally:
+            cursor.close()
 
         return {
             'message': 'User created successfully',
@@ -57,7 +66,7 @@ class UserLogin(Resource):
         cursor.close()
 
         #todo: What is the appropriate error code to return here?
-        if not len(response):
+        if not response:
             return {
                 'message': 'User not found'
             }, 404

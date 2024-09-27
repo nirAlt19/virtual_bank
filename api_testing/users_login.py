@@ -2,7 +2,7 @@ import requests
 import random
 
 user_data = {
-    'email': 'jane1000@doe',
+    'email': 'jane124@doe',
     'hashed_password': 'password123'
 }
 

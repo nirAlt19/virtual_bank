@@ -1,7 +1,6 @@
 from flask_restful import Resource, reqparse
 from datetime import datetime
-from psycopg2.errors import UniqueViolation
-import logging
+from psycopg2.errors import ForeignKeyViolation
 from uuid import uuid4
 from providers.db import get_postgresql_cursor
 from bank_accounts.bank_account import BankAccount, AccountType
@@ -39,9 +38,9 @@ class OpenAccount(Resource):
         cursor = get_postgresql_cursor()
         try:
             cursor.execute(query)
-        except UniqueViolation:
+        except ForeignKeyViolation:
             return {
-                'message': 'Owner account already exists',
+                'message': 'Owner not found',
                 'owner': account.owner,
             }, 400
         finally:
@@ -49,7 +48,12 @@ class OpenAccount(Resource):
 
         return {
             'message': 'Account created successfully',
-            'account': args
+            'account': {
+                'account_number': account.account_number,
+                'owner': account.owner,
+                'account_type': account.account_type,
+                'balance': account.balance
+            }
         }, 201
 
 

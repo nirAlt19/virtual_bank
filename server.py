@@ -4,7 +4,6 @@ from flask_restful import Api
 from users.api_handlers import UserRegistration, UserLogin
 from status.api_handlers import DBKeepAlive
 from bank_accounts.api_handlers import OpenAccount
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,12 +15,16 @@ load_dotenv()
 app = Flask(__name__)
 api = Api(app)
 
+resources_mapping = {
+    '/users/register': UserRegistration,
+    '/users/login': UserLogin,
+    '/status': DBKeepAlive,
+    '/accounts/open': OpenAccount
+}
 
 # Add the resources to the API
-api.add_resource(UserRegistration, '/users')
-api.add_resource(UserLogin, '/users/login')
-api.add_resource(DBKeepAlive, '/status')
-api.add_resource(OpenAccount, '/accounts') #todo: Not accounts/open? Do i have to add every sub individualy?
+for url, resource in resources_mapping.items():
+    api.add_resource(resource, url)
 
 #TODO: Only working with host 0.0.0.0?
 if __name__ == '__main__':
