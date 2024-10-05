@@ -1,0 +1,58 @@
+Product Requirements:
+
+1. A simple user management capabilities that allows creating new users, and logging in as a user.
+
+// Create User
+
+POST /users
+Request: { "first_name", "last_name", "email", "password" }
+Response: { "id", "first_name", "last_name", "email", "created_at", "updated_at" }
+
+// Login as a user (aka obtain access)
+
+POST /users/login
+Request: { "email", "password" }
+Response: { "access_token" }
+
+2. Allow users to create bank accounts - a bank account can be checking or savings accounts.
+
+// Create Bank Account for a given user
+
+POST /bank_accounts
+Request: { "type" }
+Response: { "id", "user_id", "type", "balance", "created_at", "updated_at" }
+
+3. Allow users to deposit funds into their accounts.
+
+// Create Deposit into a given bank account
+
+POST /bank_accounts/{bank_account_id}/deposit
+Request: { "amount" }
+Response: { "id", "user_id", "bank_account_id", "deposit_amount", "account_balance", "created_at" }
+
+4. Allow users to withdraw funds from their accounts.
+
+// Create Withdrawal from a given bank account
+
+POST /bank_accounts/{bank_account_id}/withdraw
+Request: { "amount" }
+Response: { "id", "user_id", "bank_account_id", "withdrawal_amount", "account_balance", "created_at" }
+
+5. Allow users to transfer funds into other accounts within the bank.
+
+// Create transfer request between two bank accounts
+
+POST /bank_accounts/{from_bank_account_id}/transfer
+Request: { "to_bank_account_id", "amount" }
+Response: { "id", "from_bank_account_id", "to_bank_account_id", "transfer_amount", "account_balance", "created_at" }
+
+6. Allow users to see their information and their bank accounts with their transactions
+
+// Get User Details
+
+GET /users
+GET /users/{user_id}
+
+// Get Bank Accounts for a given user
+
+// Get Transactions for a given bank account
