@@ -1,5 +1,4 @@
 import requests
-import random
 
 user_data = {
     'email': 'jane124@doe',
