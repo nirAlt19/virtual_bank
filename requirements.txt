@@ -4,4 +4,5 @@ PyJWT
 Werkzeug
 uuid6
 psycopg2
+python-dotenv
 bcrypt

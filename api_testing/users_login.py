@@ -1,8 +1,8 @@
 import requests
 
 user_data = {
-    'email': 'jane801@doe',
-    'password': 'password123'
+    'email': 'jane124@doe',
+    'hashed_password': 'password123'
 }
 
 response = requests.post('http://localhost:5000/users/login', json=user_data)
